@@ -7,16 +7,12 @@
 
 初始化配置安装`rollup`
 
-```
+```js
 npm init -y
 npm install rollup rollup-plugin-serve
 ```
 
-1  
-2  
-
-
-```
+```js
 import serve from 'rollup-plugin-serve'
 export default {
     input:'./src/single-spa.js',
@@ -36,30 +32,12 @@ export default {
 }
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-9  
-10  
-11  
-12  
-13  
-14  
-15  
-16  
-17  
-
 
 > 这里我们一切从简，只借助`rollup`模块化和打包的能力~，不进行过多的`rollup`配置， 把精力放到编写微前端的核心逻辑上~~~
 
 ## 二.`SignleSpa`的使用方式
 
-```
+```js
 singleSpa.registerApplication('app1',
     async () => {
         return {
@@ -80,26 +58,6 @@ singleSpa.registerApplication('app1',
 singleSpa.start();
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-9  
-10  
-11  
-12  
-13  
-14  
-15  
-16  
-17  
-18  
-
-
 -   参数分别是:
 -   `appName`: 当前注册应用的名字
 -   `loadApp`: 加载函数(必须返回的是promise)，返回的结果必须包含`bootstrap`、`mount`和 `unmount`做为接入协议
@@ -108,7 +66,7 @@ singleSpa.start();
 
 **根据使用方式编写源码**
 
-```
+```js
 const apps = [];
 export function registerApplication(appName,loadApp,activeWhen,customProps){
     apps.push({
@@ -125,27 +83,12 @@ export {registerApplication} from './applications/app.js';
 export {start} from './start.js';
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-9  
-10  
-11  
-12  
-13  
-14  
-
 
 ## 三.应用加载状态 - 生命周期
 
 ![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f7b6334029b046018a1a0aa110a8ce96~tplv-k3u1fbpfcp-zoom-1.image)
 
-```
+```js
 export const NOT_LOADED = "NOT_LOADED"; // 没有加载过
 export const LOADING_SOURCE_CODE = "LOADING_SOURCE_CODE"; // 加载原代码
 export const NOT_BOOTSTRAPPED = "NOT_BOOTSTRAPPED"; // 没有启动
@@ -166,27 +109,6 @@ export function shouldBeActive(app) { // 当前app是否应该激活
     return app.activeWhen(window.location);
 }
 ```
-
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-9  
-10  
-11  
-12  
-13  
-14  
-15  
-16  
-17  
-18  
-19  
-
 
 **标注应用状态**
 
