@@ -112,7 +112,7 @@ export function shouldBeActive(app) { // 当前app是否应该激活
 
 **标注应用状态**
 
-```
+```js
 import { NOT_LOADED } from './app.helpers';
 apps.push({
     name: appName,
@@ -124,7 +124,7 @@ apps.push({
 ```
 ## 四.加载应用并启动
 
-```
+```js
 import {reroute} from '../navigation/reroute.js';
 export function registerApplication(appName, loadApp, activeWhen, customProps) {
 	// ...
@@ -132,14 +132,7 @@ export function registerApplication(appName, loadApp, activeWhen, customProps) {
 }
 ```
 
-1  
-2  
-3  
-4  
-5  
-
-
-```
+```js
 import {reroute} from './navigation/reroute'
 export let started = false;
 export function start(){
@@ -147,14 +140,6 @@ export function start(){
     reroute(); // 这个是启动应用
 }
 ```
-
-1  
-2  
-3  
-4  
-5  
-6  
-
 
 > reroute方法就是比较核心的一个方法啦~，当注册应用时reroute的功能是加载子应用，当调用start方法时是挂载应用。
 
@@ -164,7 +149,7 @@ export function start(){
 
 ### 1).获取对应状态的`app`
 
-```
+```js
 import {getAppChanges} from '../applications/apps';
 export function reroute() {
     const {
@@ -175,17 +160,7 @@ export function reroute() {
 }
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-
-
-```
+```js
 export function getAppChanges(){
     const appsToUnmount = [];
     const appsToLoad = [];
@@ -215,34 +190,6 @@ export function getAppChanges(){
 }
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-9  
-10  
-11  
-12  
-13  
-14  
-15  
-16  
-17  
-18  
-19  
-20  
-21  
-22  
-23  
-24  
-25  
-26  
-27  
-
 
 > 根据状态筛选对应的应用
 
@@ -250,7 +197,7 @@ export function getAppChanges(){
 
 当用户没有调用`start`方法时，我们默认会先进行应用的加载
 
-```
+```js
 if(started){
      return performAppChanges();
 }else{
@@ -264,20 +211,8 @@ async function loadApps(){
 }
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-9  
-10  
-11  
 
-
-```
+```js
 import {toLoadPromise} from '../lifecycles/load';
 async function loadApps(){
 	// 预加载应用
@@ -285,14 +220,8 @@ async function loadApps(){
 }
 ```
 
-1  
-2  
-3  
-4  
-5  
 
-
-```
+```js
 import { LOADING_SOURCE_CODE, NOT_BOOTSTRAPPED } from "../applications/app.helpers";
 function flattenFnArray(fns) { // 将函数通过then链连接起来
     fns = Array.isArray(fns) ? fns : [fns];
@@ -310,24 +239,6 @@ export async function toLoadPromise(app) {
     return app;
 }
 ```
-
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-9  
-10  
-11  
-12  
-13  
-14  
-15  
-16  
-
 
 > 用户load函数返回的`bootstrap`、`mount`、`unmount`可能是数组形式，我们将这些函数进行组合
 
