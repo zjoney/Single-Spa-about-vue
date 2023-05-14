@@ -246,7 +246,7 @@ export async function toLoadPromise(app) {
 
 **路由切换时卸载不需要的应用**
 
-```
+```js
 import {toUnmountPromise} from '../lifecycles/unmount';
 import {toUnloadPromise} from '../lifecycles/unload';
 async function performAppChanges(){
@@ -255,17 +255,10 @@ async function performAppChanges(){
 }
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-
 
 > 这里为了更加直观，我就采用最简单的方法来实现，调用钩子，并修改应用状态
 
-```
+```js
 import { UNMOUNTING, NOT_MOUNTED ,MOUNTED} from "../applications/app.helpers";
 export async function toUnmountPromise(app){
     if(app.status != MOUNTED){
