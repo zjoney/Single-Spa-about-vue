@@ -271,19 +271,7 @@ export async function toUnmountPromise(app){
 }
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-9  
-10  
-
-
-```
+```js
 import { NOT_LOADED, UNLOADING } from "../applications/app.helpers";
 const appsToUnload = {};
 export async function toUnloadPromise(app){
@@ -298,23 +286,10 @@ export async function toUnloadPromise(app){
 }
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-9  
-10  
-11  
-12  
-
 
 **匹配到没有加载过的应用** (加载=> 启动 => 挂载)
 
-```
+```js
 const loadThenMountPromises = appsToLoad.map(async (app) => {
     app = await toLoadPromise(app);
     app = await toBootstrapPromise(app);
@@ -322,16 +297,10 @@ const loadThenMountPromises = appsToLoad.map(async (app) => {
 });
 ```
 
-1  
-2  
-3  
-4  
-5  
-
 
 > 这里需要注意一下，可能还有没加载完的应用这里不要进行重复加载
 
-```
+```js
 export async function toLoadPromise(app) {
     if(app.loadPromise){
         return app.loadPromise;
@@ -353,28 +322,8 @@ export async function toLoadPromise(app) {
 }
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-9  
-10  
-11  
-12  
-13  
-14  
-15  
-16  
-17  
-18  
-19  
 
-
-```
+```js
 import { BOOTSTRAPPING, NOT_MOUNTED,NOT_BOOTSTRAPPED } from "../applications/app.helpers.js";
 export async function toBootstrapPromise(app) {
     if(app.status !== NOT_BOOTSTRAPPED){
@@ -387,19 +336,8 @@ export async function toBootstrapPromise(app) {
 }
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-9  
-10  
 
-
-```
+```js
 import { MOUNTED, MOUNTING,NOT_MOUNTED } from "../applications/app.helpers.js";
 export async function toMountPromise(app) {
     if (app.status !== NOT_MOUNTED) {
@@ -411,18 +349,6 @@ export async function toMountPromise(app) {
     return app;
 }
 ```
-
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-9  
-10  
-
 
 **已经加载过了的应用** (启动 => 挂载)
 
