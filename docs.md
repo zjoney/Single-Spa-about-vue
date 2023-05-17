@@ -352,7 +352,7 @@ export async function toMountPromise(app) {
 
 **已经加载过了的应用** (启动 => 挂载)
 
-```
+```js
 const mountPromises = appsToMount.map(async (app) => {
     app = await toBootstrapPromise(app);
     return toMountPromise(app);
@@ -361,17 +361,9 @@ await Promise.all(unmountPromises); // 等待先卸载完成
 await Promise.all([...loadThenMountPromises,...mountPromises]); 
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-
-
 ## 六.路由劫持
 
-```
+```js
 import { reroute } from "./reroute.js";
 export const routingEventsListeningTo = ["hashchange", "popstate"];
 const capturedEventListeners = { // 存储hashchang和popstate注册的方法
@@ -432,71 +424,12 @@ export function callCapturedEventListeners(eventArguments) {
 }
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-9  
-10  
-11  
-12  
-13  
-14  
-15  
-16  
-17  
-18  
-19  
-20  
-21  
-22  
-23  
-24  
-25  
-26  
-27  
-28  
-29  
-30  
-31  
-32  
-33  
-34  
-35  
-36  
-37  
-38  
-39  
-40  
-41  
-42  
-43  
-44  
-45  
-46  
-47  
-48  
-49  
-50  
-51  
-52  
-53  
-54  
-55  
-56  
-57  
-58  
-
 
 > 为了保证应用加载逻辑最先被处理，我们对路由的一系列的方法进行重写，确保加载应用的逻辑最先被调用，其次手动派发事件
 
 ## 七.加载应用
 
-```
+```js
 await Promise.all(appsToLoad.map(toLoadPromise)); // 加载后触发路由方法
 callCapturedEventListeners(eventArguments);
 
@@ -505,17 +438,10 @@ await Promise.all(unmountPromises); // 等待先卸载完成后触发路由方�
 callCapturedEventListeners(eventArguments);
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-
 
 校验当前是否需要被激活,在进行启动和挂载
 
-```
+```js
 async function tryToBootstrapAndMount(app) {
     if (shouldBeActive(app)) {
         app = await toBootstrapPromise(app);
@@ -525,20 +451,11 @@ async function tryToBootstrapAndMount(app) {
 }
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-
-
 ## 八.批处理加载等待
 
 ![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2a33da6f947344f3a2edf1ab6bff044f~tplv-k3u1fbpfcp-zoom-1.image)
 
-```
+```js
 export function reroute(pendings = [], eventArguments) {
     if (appChangeUnderway) {
         return new Promise((resolve, reject) => {
@@ -569,41 +486,12 @@ export function reroute(pendings = [], eventArguments) {
 }
 ```
 
-1  
-2  
-3  
-4  
-5  
-6  
-7  
-8  
-9  
-10  
-11  
-12  
-13  
-14  
-15  
-16  
-17  
-18  
-19  
-20  
-21  
-22  
-23  
-24  
-25  
-26  
-27  
-28  
-
 
 > 这里的思路和`Vue.nextTick`一样，如果当前应用正在加载时，并且用户频繁切换路由。我们会将此时的reroute方法暂存起来，等待当前应用加载完毕后再次触发reroute渲染应用，从而节约性能!
 
 最终别忘了，完成一轮应用加载时，需要手动触发用户注册的路由事件！
 
-```
+```js
  callAllEventListeners();
  function callAllEventListeners() {
      pendingPromises.forEach((pendingPromise) => {
